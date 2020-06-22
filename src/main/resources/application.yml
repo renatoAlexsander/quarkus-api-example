@@ -1,0 +1,13 @@
+quarkus:
+  datasource:
+    db-kind: h2
+    jdbc:
+      url: jdbc:h2:~/test
+    username: sa
+    password:
+  hibernate-orm:
+    dialect: org.hibernate.dialect.H2Dialect
+    log:
+      sql: true
+    database:
+      generation: drop-and-create
