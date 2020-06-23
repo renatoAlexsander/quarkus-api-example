@@ -1,12 +1,12 @@
 quarkus:
   datasource:
-    db-kind: h2
+    db-kind: postgresql
     jdbc:
-      url: jdbc:h2:~/test
-    username: sa
-    password:
+      url: jdbc:postgresql://localhost:5432/library
+    username: postgres
+    password: postgres
   hibernate-orm:
-    dialect: org.hibernate.dialect.H2Dialect
+    dialect: org.hibernate.dialect.PostgreSQLDialect
     log:
       sql: true
     database:

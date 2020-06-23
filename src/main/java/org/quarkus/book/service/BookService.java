@@ -7,7 +7,7 @@ import org.quarkus.book.repository.BookRepository;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class BookService {
 
     @Inject
-    private BookRepository bookRepository;
+    BookRepository bookRepository;
 
     @Transactional
     public void save(BookDTO bookDTO) {
@@ -29,11 +29,16 @@ public class BookService {
             .collect(Collectors.toList());
     }
 
-    public BookDTO findById(Long id) {
-        return BookMapper.INSTANCE.of(
-            bookRepository.findByIdOptional(id)
-                .orElseThrow(() -> new NotFoundException("Book not found."))
-        );
+    public Response findById(Long id) {
+        var book = bookRepository.findByIdOptional(id);
+
+        if (book.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Book not found.")
+                    .build();
+        }
+        return Response.ok(BookMapper.INSTANCE.of(book.get()))
+                .build();
     }
 
     @Transactional

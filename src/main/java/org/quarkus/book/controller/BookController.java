@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 public class BookController {
 
     @Inject
-    private BookService bookService;
+    BookService bookService;
 
     @POST
     public void save(BookDTO bookDTO) {

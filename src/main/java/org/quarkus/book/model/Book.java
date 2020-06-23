@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BOOK")
+    @SequenceGenerator(name = "SEQ_BOOK", sequenceName = "SEQ_BOOK", allocationSize = 1)
     private Long id;
     private String name;
     private BigDecimal price;
