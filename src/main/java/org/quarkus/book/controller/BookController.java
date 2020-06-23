@@ -17,27 +17,24 @@ public class BookController {
     BookService bookService;
 
     @POST
-    public void save(BookDTO bookDTO) {
-        bookService.save(bookDTO);
+    public Response save(BookDTO bookDTO) {
+        return bookService.save(bookDTO);
     }
 
     @GET
     public Response findAll() {
-        return Response.ok(bookService.findAll())
-            .build();
+        return bookService.findAll();
     }
 
     @GET
     @Path("{id}")
     public Response findById(@PathParam("id") Long id) {
-        return Response.ok(bookService.findById(id))
-            .build();
+        return bookService.findById(id);
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteById(@PathParam("id") Long id) {
-        bookService.deleteById(id);
-        return Response.noContent().build();
+        return bookService.deleteById(id);
     }
 }

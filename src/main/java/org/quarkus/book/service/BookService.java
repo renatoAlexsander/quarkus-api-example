@@ -8,7 +8,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
-import java.util.List;
+import java.net.URI;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -18,15 +19,31 @@ public class BookService {
     BookRepository bookRepository;
 
     @Transactional
-    public void save(BookDTO bookDTO) {
-        bookRepository.persist(BookMapper.INSTANCE.of(bookDTO));
+    public Response save(BookDTO bookDTO) {
+        if (Objects.nonNull(bookDTO.getId())) {
+            var bookFounded = bookRepository.findById(bookDTO.getId());
+            bookFounded.setName(bookDTO.getName());
+            bookFounded.setPrice(bookDTO.getPrice());
+
+            bookRepository.persistAndFlush(bookFounded);
+            return Response.ok(bookFounded)
+                    .build();
+        }
+        var book = BookMapper.INSTANCE.of(bookDTO);
+        bookRepository.persist(book);
+        return Response.created(URI.create("/api/books"))
+                .entity(book)
+                .build();
     }
 
-    public List<BookDTO> findAll() {
-        return bookRepository.findAll()
-            .stream()
-            .map(BookMapper.INSTANCE::of)
-            .collect(Collectors.toList());
+    public Response findAll() {
+        var books = bookRepository.findAll()
+                .stream()
+                .map(BookMapper.INSTANCE::of)
+                .collect(Collectors.toSet());
+
+        return Response.ok(books)
+                .build();
     }
 
     public Response findById(Long id) {
@@ -42,7 +59,9 @@ public class BookService {
     }
 
     @Transactional
-    public void deleteById(Long id) {
+    public Response deleteById(Long id) {
         bookRepository.deleteById(id);
+        return Response.noContent()
+                .build();
     }
 }

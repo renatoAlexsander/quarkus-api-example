@@ -1,48 +1,53 @@
 package org.quarkus.book.model;
 
+import lombok.*;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "BOOKS")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@EqualsAndHashCode(of = {"id", "name", "price", "registerAt", "editedAt"})
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BOOK")
     @SequenceGenerator(name = "SEQ_BOOK", sequenceName = "SEQ_BOOK", allocationSize = 1)
+    @Column(name = "ID")
     private Long id;
+
+    @NotNull
+    @NotEmpty
+    @Column(nullable = false, unique = true, name = "NAME")
+    @Setter
     private String name;
+
+    @NotNull
+    @Column(nullable = false, name = "PRICE")
+    @Setter
     private BigDecimal price;
 
-    public Book() {
+    @Column(nullable = false, updatable = false, name = "REGISTER_AT")
+    private LocalDateTime registerAt;
+
+    @Column(name = "EDITED_AT")
+    private LocalDateTime editedAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.registerAt = LocalDateTime.now();
     }
 
-    public Book(String name, BigDecimal price) {
-        this.name = name;
-        this.price = price;
+    @PostPersist
+    public void posPersist() {
+        this.editedAt = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
 }

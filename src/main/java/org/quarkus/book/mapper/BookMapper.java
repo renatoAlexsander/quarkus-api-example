@@ -14,10 +14,14 @@ public interface BookMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "price", target = "price")
+    @Mapping(source = "registerAt", target = "registerAt")
+    @Mapping(source = "editedAt", target = "editedAt")
     Book of(BookDTO bookDTO);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "price", target = "price")
+    @Mapping(source = "registerAt", target = "registerAt")
+    @Mapping(source = "editedAt", target = "editedAt")
     BookDTO of(Book book);
 }
