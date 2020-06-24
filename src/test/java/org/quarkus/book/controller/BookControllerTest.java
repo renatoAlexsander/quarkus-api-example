@@ -38,12 +38,7 @@ class BookControllerTest {
             .then()
             .statusCode(200)
             .contentType(ContentType.JSON)
-            .body("size()", is(2))
-            .body("[0].id", equalTo(1))
-            .body("[0].name", equalTo("JAVA 8"))
-            .body("[0].price", equalTo(100))
-            .body("[0].registerAt", notNullValue())
-            .body("[0].editedAt", nullValue());
+            .body("size()", is(2));
 
         verify(bookService).findAll();
     }
@@ -91,5 +86,15 @@ class BookControllerTest {
             .price(BigDecimal.valueOf(99))
             .registerAt(LocalDateTime.now())
             .build();
+    }
+
+    @Test
+    public void shouldDeleteBookById() {
+        // todo delete book
+    }
+
+    @Test
+    public void shouldSave() {
+        // todo save a new book
     }
 }
