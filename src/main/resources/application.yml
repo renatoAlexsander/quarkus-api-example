@@ -1,17 +1,16 @@
-"%dev":
-  quarkus:
-    datasource:
-      db-kind: postgresql
-      jdbc:
-        url: jdbc:postgresql://localhost:5432/library
-      username: postgres
-      password: postgres
-    hibernate-orm:
-      log:
-        sql: true
-      database:
-        generation: drop-and-create
-      sql-load-script: import-dev.sql
+quarkus:
+  datasource:
+    db-kind: postgresql
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/library
+    username: postgres
+    password: postgres
+  hibernate-orm:
+    log:
+      sql: true
+    database:
+      generation: drop-and-create
+    sql-load-script: import-dev.sql
 
 "%test":
   quarkus:
