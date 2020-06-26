@@ -1,4 +1,6 @@
 quarkus:
+  http:
+    port: 8082
   datasource:
     db-kind: postgresql
     jdbc:
